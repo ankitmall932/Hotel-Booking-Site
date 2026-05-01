@@ -12,7 +12,7 @@ import reviewRouter from './routes/review.route.js';
 const app = express();
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true
 }));
 app.use(morgan('dev'));
