@@ -5,6 +5,7 @@ import { validateSchema } from '../middleware/schema.validate.js';
 import resetPasswordSchema from '../validation/resetPassword.validator.js';
 import registerSchema from '../validation/register.validator.js';
 import loginSchema from '../validation/login.validator.js';
+import * as rateLimit from '../middleware/rateLimit.middleware.js';
 
 
 const router = express.Router();
@@ -13,9 +14,9 @@ router.post('/register', validateSchema(registerSchema), controllers.register);
 
 router.post('/verifyOtp', controllers.verifyOtp);
 
-router.post('/login', validateSchema(loginSchema), controllers.login);
+router.post('/login', rateLimit.loginLimiter, validateSchema(loginSchema), controllers.login);
 
-router.post('/resetPassword', validateSchema(resetPasswordSchema), protect, controllers.resetPassword);
+router.post('/resetPassword', rateLimit.otpLimiter, validateSchema(resetPasswordSchema), controllers.resetPassword);
 
 router.post('/logout', protect, controllers.logout);
 
