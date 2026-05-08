@@ -23,6 +23,17 @@ const listingSchema = new mongoose.Schema({
             default: 'India'
         }
     },
-});
+    geometry: {
+        type: {
+            type: String,
+            enum: [ 'Point' ],
+            default: 'Point'
+        },
+        coordinates: {
+            type: [ Number ],
+            required: true
+        }
+    }
+}, { timestamps: true });
 
 export default mongoose.model.Listing || mongoose.model('Listing', listingSchema);

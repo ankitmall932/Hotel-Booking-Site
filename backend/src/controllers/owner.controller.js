@@ -16,7 +16,7 @@ export const createListing = async (req, res, next) => {
                 public_id: result.public_id,
             });
         }
-        const { name, description, price, city, state, country } = req.body;
+        const { name, description, price, city, state, country, lat, lng } = req.body;
         let amenities = [];
         if (req.body.amenities || req.body[ 'amenities[]' ])
         {
@@ -47,6 +47,13 @@ export const createListing = async (req, res, next) => {
                 state,
                 country
             },
+            geometry: {
+                type: 'Point',
+                coordinates: [
+                    lng,
+                    lat
+                ]
+            }
         });
         return res.status(201).json({
             success: true,
