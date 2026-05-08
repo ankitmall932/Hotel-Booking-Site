@@ -10,5 +10,7 @@ export const listingSchema = z.object({
     amenities: z.string().optional(),
     state: z.string(state),
     city: z.string(),
-    country: z.literal('India')
+    country: z.literal('India'),
+    lat: z.coerce.number(),
+    lng: z.coerce.number(),
 });

@@ -7,6 +7,7 @@ import { useAuth } from '../../context/AuthContext';
 import BookingPage from './BookingPage';
 import CreateReview from './CreateReview';
 import ViewReview from '../publics/ViewReview';
+import RoomMap from '../../components/map/RoomMap';
 
 
 function Rooms () {
@@ -86,11 +87,9 @@ function Rooms () {
                     </>
                 )
                 }
-                { detail?.coords && (
-                    <div className='w-[80%] mt-10'>
-                        <Map listings={ detail } userLocation={ detail.coords } showUserLocation={ false } />
-                    </div>
-                ) }
+                <div className='w-[80%] mt-10 sticky rounded-2xl'>
+                    <RoomMap listing={ detail } />
+                </div>
             </div>
             <CreateReview />
             <ViewReview />
