@@ -5,6 +5,8 @@ import Session from '../models/session.model.js';
 import { genAccessToken, genRefreshToken } from '../utils/tokens.utils.js';
 import { generateOtp } from '../utils/genOtp.utils.js';
 import { sendEmail } from '../utils/sendEmail.utils.js';
+import { UAParser } from 'ua-parser-js'; //firstly install ua-parser-js using npm i ua-parser-js
+import Device from '../models/device.model.js';
 
 const otpStore = {};
 
@@ -96,6 +98,21 @@ export const verifyOtp = async (req, res, next) => {
             user: user._id,
             refreshToken
         });
+        const parser = new UAParser(req.headers[ 'user-agent' ]);
+        const result = parser.getResult();
+        const browser = result.browser.name || 'Unknown Browser';
+        const os = result.os.name || 'Unknown OS';
+        const device = result.device.type || 'Desktop';
+        const ip = req.headers[ 'x-forwarded-for' ] || req.socket.remoteAddress;
+        await Device.create({
+            user: user._id,
+            browser,
+            os,
+            device,
+            ip,
+            token: accessToken,
+            lastActive: new Date()
+        });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             sameSite: 'lax',
@@ -148,6 +165,21 @@ export const login = async (req, res, next) => {
             user: user._id,
             refreshToken
         });
+        const parser = new UAParser(req.headers[ 'user-agent' ]);
+        const result = parser.getResult();
+        const browser = result.browser.name || 'Unknown Browser';
+        const os = result.os.name || 'Unknown OS';
+        const device = result.device.type || 'Desktop';
+        const ip = req.headers[ 'x-forwarded-for' ] || req.socket.remoteAddress;
+        await Device.create({
+            user: user._id,
+            browser,
+            os,
+            device,
+            ip,
+            token: accessToken,
+            lastActive: new Date()
+        });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             sameSite: 'lax',
@@ -169,6 +201,22 @@ export const login = async (req, res, next) => {
     }
 };
 
+export const deviceHistory = async (req, res, next) => {
+    try
+    {
+        const devices = await Device.find({
+            user: req.user._id,
+        }).sort({ lastActive: -1 });
+        const updateDevices = devices.map((device) => ({
+            ...device._doc,
+            currentDevice: device.token === req.token,
+        }));
+        res.json({ updateDevices });
+    } catch (err)
+    {
+        next(err);
+    }
+};
 export const resetPassword = async (req, res, next) => {
     try
     {

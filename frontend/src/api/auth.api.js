@@ -91,3 +91,14 @@ export const switchUser = async (data) => {
         return { data: null, error: err.response?.data?.message || 'Switch Failed' };
     }
 };
+
+export const deviceHistory = async () => {
+    try
+    {
+        const res = await api.get('/auth/device');
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'History Failed' };
+    }
+};
