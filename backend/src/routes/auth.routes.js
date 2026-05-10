@@ -16,6 +16,8 @@ router.post('/verifyOtp', controllers.verifyOtp);
 
 router.post('/login', rateLimit.loginLimiter, validateSchema(loginSchema), controllers.login);
 
+router.get('/device', protect, controllers.deviceHistory);
+
 router.post('/resetPassword', rateLimit.otpLimiter, validateSchema(resetPasswordSchema), controllers.resetPassword);
 
 router.post('/logout', protect, controllers.logout);

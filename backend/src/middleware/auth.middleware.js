@@ -21,6 +21,7 @@ export const protect = async (req, res, next) => {
             });
         }
         req.user = user; //this include all the parts of the user
+        req.token = token;//for device history
         next();
     } catch (err)
     {
