@@ -149,6 +149,10 @@ export const updateListing = async (req, res, next) => {
         // Handle image uploads if provided
         if (req.files && req.files.length > 0)
         {
+            for (let img of listing.images)
+            {
+                await cloudinary.uploader.destroy(img.public_id);
+            }
             const uploadedImages = [];
             for (let file of req.files)
             {
@@ -219,6 +223,10 @@ export const deleteListing = async (req, res, next) => {
             return res.status(404).json({
                 message: 'Listing not found'
             });
+        }
+        for (let img of listing.images)
+        {
+            await cloudinary.uploader.destroy(img.public_id);
         }
         res.json({ message: 'Listing deleted successfully' });
     } catch (err)
