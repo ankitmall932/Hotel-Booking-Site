@@ -33,6 +33,7 @@ export const register = async (req, res, next) => {
             existingUser.currentRole = currentRole || 'customer';
             existingUser.otp = otp;
             existingUser.otpExpired = new Date(Date.now() + 10 * 60 * 1000);
+            existingUser.otpLastSent = new Date();
             await existingUser.save();
             user = existingUser;
         } else
@@ -44,7 +45,8 @@ export const register = async (req, res, next) => {
                 role: role || 'customer',
                 currentRole: currentRole || 'customer',
                 otp,
-                otpExpired: new Date(Date.now() + 10 * 60 * 1000),
+                otpExpired: new Date(Date.now() + 5 * 60 * 1000),
+                otpLastSent: new Date(),
                 isVerified: false
             });
         }
@@ -58,6 +60,39 @@ export const register = async (req, res, next) => {
     }
 };
 
+export const resendOtp = async (req, res, next) => {
+    try
+    {
+        let { email } = req.body;
+        email = email.toLowerCase();
+        const user = await User.findOne({ email });
+        if (!user)
+        {
+            return res.status(404).json({
+                message: 'User not found'
+            });
+        }
+        const now = new Date();
+        if (user.otpLastSent && now - user.otpLastSent < 30000)
+        {
+            return res.status(429).json({
+                message: 'OTP already sent, please wait before requesting again'
+            });
+        }
+        const otp = generateOtp();
+        user.otp = otp;
+        user.otpExpired = new Date(Date.now() + 5 * 60 * 1000);
+        user.otpLastSent = now;
+        await user.save();
+        await registerEmail(email, otp, user.name);
+        return res.status(200).json({
+            message: 'OTP resent successfully, Please Check Your Email'
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
 export const verifyOtp = async (req, res, next) => {
     try
     {
