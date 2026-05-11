@@ -109,6 +109,7 @@ export const createBooking = async (req, res, next) => {
 export const getUserBookings = async (req, res, next) => {
     try
     {
+        await Bookings.updateMany({ user: req.user._id, status: 'Confirmed', checkOutDate: { $lt: new Date() } }, { $set: { status: 'Completed' } });
         const bookings = await Bookings.find({ user: req.user._id }).populate('listing');
         return res.status(200).json({
             message: 'Bookings retrieved successfully',
