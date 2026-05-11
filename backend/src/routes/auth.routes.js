@@ -30,5 +30,8 @@ router.post('/refresh', controllers.refresh);
 
 router.post('/switchUser', protect, controllers.switchUser);
 
+router.delete('/delete-account', protect, controllers.deleteAccount);
+
+
 
 export default router;

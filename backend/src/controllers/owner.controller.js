@@ -146,7 +146,6 @@ export const updateListing = async (req, res, next) => {
                 message: 'Listing not found'
             });
         }
-        // Handle image uploads if provided
         if (req.files && req.files.length > 0)
         {
             for (let img of listing.images)
@@ -164,12 +163,10 @@ export const updateListing = async (req, res, next) => {
             }
             listing.images = uploadedImages;
         }
-        // Update basic fields
         const { name, description, price, city, state, country } = req.body;
         if (name) listing.name = name;
         if (description) listing.description = description;
         if (price) listing.price = price;
-        // Update location if provided
         if (city || state || country)
         {
             if (city && state && !locationData[ state ]?.includes(city?.trim()))
@@ -184,7 +181,6 @@ export const updateListing = async (req, res, next) => {
                 country: country || listing.location.country
             };
         }
-        // Update amenities if provided
         if (req.body.amenities)
         {
             try

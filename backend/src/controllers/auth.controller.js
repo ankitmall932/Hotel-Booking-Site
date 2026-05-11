@@ -4,9 +4,12 @@ import User from '../models/user.model.js';
 import Session from '../models/session.model.js';
 import { genAccessToken, genRefreshToken } from '../utils/tokens.utils.js';
 import { generateOtp } from '../utils/genOtp.utils.js';
-import { registerEmail, registeredEmail, loginEmail, resetPasswordEmail, resetPasswordOtpEmail } from '../utils/sendEmail.utils.js';
+import { registerEmail, registeredEmail, loginEmail, resetPasswordEmail, resetPasswordOtpEmail, deleteAccountEmail } from '../utils/sendEmail.utils.js';
 import { UAParser } from 'ua-parser-js'; //firstly install ua-parser-js using npm i ua-parser-js
 import Device from '../models/device.model.js';
+import Listing from '../models/listing.model.js';
+import Booking from '../models/booking.model.js';
+import cloudinary from '../config/cloudinary.js';
 
 const otpStore = {};
 
@@ -421,6 +424,46 @@ export const switchUser = async (req, res, next) => {
                 email: user.email,
                 currentRole: user.currentRole
             }
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
+
+export const deleteAccount = async (req, res, next) => {
+    try
+    {
+        const userId = req.user._id;
+        const listings = await Listing.find({ owner: userId });
+        const listingIds = listings.map(listing => listing._id);
+        for (const listing of listings)
+        {
+            if (listing.images && listing.images.length > 0)
+            {
+                for (const image of listing.images)
+                {
+                    if (image.public_id)
+                    {
+                        await cloudinary.uploader.destroy(image.public_id);
+                    }
+                }
+            }
+        }
+        await Booking.deleteMany({
+            listing: { $in: listingIds }
+        });
+        await Booking.deleteMany({
+            user: userId
+        });
+        await Listing.deleteMany({
+            owner: userId
+        });
+        await User.findByIdAndDelete(userId);
+        await deleteAccountEmail(req.user.email, req.user.name);
+        res.clearCookie('token');
+        return res.status(200).json({
+            message: 'Account Deleted Successfully'
         });
     } catch (err)
     {

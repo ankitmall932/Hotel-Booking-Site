@@ -113,3 +113,14 @@ export const resendOtp = async (data) => {
         return { data: null, error: err.response?.data?.message || 'Resend OTP Failed' };
     }
 };
+
+export const deleteAccount = async () => {
+    try
+    {
+        const res = await api.delete('/auth/delete-account');
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'account deletion failed' };
+    }
+};
