@@ -1,7 +1,8 @@
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { verifyOtp } from '../../schemas/auth.schema';
-import { verify } from '../../api/auth.api';
+import { verify, resendOtp } from '../../api/auth.api';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../context/AuthContext';
@@ -13,6 +14,8 @@ function VerifyOtp () {
     const location = useLocation();
     const { setUser } = useAuth();
     const fromPath = location.state?.from?.pathname + location.state?.from?.search || '/';
+    const [ timer, setTimer ] = useState(30);
+    const [ canResend, setCanResend ] = useState(false);
 
     const {
         register,
@@ -43,6 +46,32 @@ function VerifyOtp () {
         nav(fromPath, { replace: true });
     };
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useEffect(() => {
+        let interval;
+        if (timer === 0)
+        {
+            setCanResend(true);
+            return;
+        }
+        interval = setInterval(() => {
+            setTimer((prev) => prev - 1);
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [ timer ]);
+
+    const handleResend = async () => {
+        const { data: res, error } = await resendOtp({ email });
+        if (error)
+        {
+            toast.warning(error);
+            return;
+        }
+        toast.success(res.message || 'OTP resent successfully');
+        setTimer(30);
+        setCanResend(false);
+    };
+
     return (
         <div className='w-full h-screen flex justify-center items-center p-20 bg-[url("/max-saeling-m8nRxnGFWVc-unsplash.jpg")] bg-cover'>
             <div className='w-250 h-150 flex '>
@@ -57,6 +86,7 @@ function VerifyOtp () {
                     <p className='text-red-500 font-bold'>{ errors.email?.message }</p>
                     <input placeholder='OTP' type='text' { ...register('otp') } className='px-5 py-3 border-2 rounded-full w-100' />
                     <p className='text-red-500 font-bold'>{ errors.otp?.message }</p>
+                    <p className='text-sm text-gray-500'>Didn't receive the OTP? <button type='button' disabled={ !canResend } onClick={ handleResend } className='text-blue-500 font-bold ml-2'>{ canResend ? 'Resend OTP' : `Resend in ${ timer }s` }</button></p>
                     <button type='submit' className='bg-blue-500 w-100 py-3 rounded-full text-white font-bold'>Submit</button>
                 </form>
             </div>

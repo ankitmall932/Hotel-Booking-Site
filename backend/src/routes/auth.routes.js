@@ -12,6 +12,8 @@ const router = express.Router();
 
 router.post('/register', validateSchema(registerSchema), controllers.register);
 
+router.post('/resendOtp', rateLimit.otpLimiter, controllers.resendOtp);
+
 router.post('/verifyOtp', controllers.verifyOtp);
 
 router.post('/login', rateLimit.loginLimiter, validateSchema(loginSchema), controllers.login);

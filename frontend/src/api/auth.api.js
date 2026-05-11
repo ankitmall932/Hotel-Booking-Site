@@ -102,3 +102,14 @@ export const deviceHistory = async () => {
         return { data: null, error: err.response?.data?.message || 'History Failed' };
     }
 };
+
+export const resendOtp = async (data) => {
+    try
+    {
+        const res = await api.post('/auth/resendOtp', data);
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'Resend OTP Failed' };
+    }
+};
