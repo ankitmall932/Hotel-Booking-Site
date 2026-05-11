@@ -4,7 +4,7 @@ import User from '../models/user.model.js';
 import Session from '../models/session.model.js';
 import { genAccessToken, genRefreshToken } from '../utils/tokens.utils.js';
 import { generateOtp } from '../utils/genOtp.utils.js';
-import { sendEmail } from '../utils/sendEmail.utils.js';
+import { registerEmail, registeredEmail, loginEmail, resetPasswordEmail, resetPasswordOtpEmail } from '../utils/sendEmail.utils.js';
 import { UAParser } from 'ua-parser-js'; //firstly install ua-parser-js using npm i ua-parser-js
 import Device from '../models/device.model.js';
 
@@ -48,7 +48,7 @@ export const register = async (req, res, next) => {
                 isVerified: false
             });
         }
-        await sendEmail(email, otp, name);
+        await registerEmail(email, otp, name);
         return res.status(201).json({
             message: 'User Register Successfully, Please Check Your Email for Otp'
         });
@@ -119,6 +119,7 @@ export const verifyOtp = async (req, res, next) => {
             secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+        await registeredEmail(email, user.name);
         res.status(200).json({
             message: 'User register and verified Successfully',
             accessToken,
@@ -186,6 +187,7 @@ export const login = async (req, res, next) => {
             secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
+        await loginEmail(email, user.name);
         res.status(200).json({
             message: `Welcome Back ${ user.name }😎😎`,
             accessToken,
@@ -242,7 +244,7 @@ export const resetPassword = async (req, res, next) => {
                 otp: otpCode,
                 expiry: Date.now() + 10 * 60 * 1000
             };
-            await sendEmail(email, `Your reset password OTP is ${ otpCode }`);
+            await resetPasswordOtpEmail(email, otpCode, user.name);
             return res.status(200).json({
                 message: 'OTP sent to your email',
             });
@@ -269,10 +271,11 @@ export const resetPassword = async (req, res, next) => {
                 });
             }
             const hashPass = await bcrypt.hash(password, 10);
-            await User.findOneAndUpdate(
+            const user = await User.findOneAndUpdate(
                 { email },
                 { password: hashPass }
             );
+            await resetPasswordEmail(email, user.name);
             delete otpStore[ email ];
             return res.status(200).json({
                 message: 'password reset successfully'
