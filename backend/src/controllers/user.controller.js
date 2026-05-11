@@ -4,6 +4,7 @@ import Bookings from '../models/booking.model.js';
 import { isAvailable } from '../utils/isAvaliable.utils.js';
 import razorpayInstance from '../config/razorpay.js';
 import crypto from 'crypto';
+import { createPaymentEmail, cancelBookingEmail, confirmPaymentEmail } from '../utils/sendEmail.utils.js';
 
 export const getProfile = async (req, res) => {
     try
@@ -78,7 +79,7 @@ export const createBooking = async (req, res, next) => {
                 message: `Room is already booked from ${ readableCheckInDate } to ${ readableCheckOutDate }`
             });
         }
-        const listing = await Listing.findById(listingId);
+        const listing = await Listing.findById(listingId).populate('owner');
         if (!listing)
         {
             return res.status(404).json({
@@ -150,6 +151,7 @@ export const createPaymentOrder = async (req, res, next) => {
             payment_capture: 1
         };
         const order = await razorpayInstance.orders.create(options);
+        await createPaymentEmail(req.user.email, bookingId, req.user.name, booking.totalPrice);
         return res.status(200).json({
             message: 'Payment order created successfully',
             success: true,
@@ -180,7 +182,8 @@ export const verifyPayment = async (req, res, next) => {
             .digest('hex');
         if (expectedSignature === razorpay_signature)
         {
-            await Bookings.findByIdAndUpdate(bookingId, { status: 'Confirmed', razorpay_payment_id });
+            const booking = await Bookings.findByIdAndUpdate(bookingId, { status: 'Confirmed', razorpay_payment_id });
+            await confirmPaymentEmail(req.user.email, bookingId, req.user.name, booking.totalPrice, booking.checkInDate, booking.checkOutDate);
             return res.status(200).json({
                 message: 'Payment verified successfully',
                 success: true
@@ -231,6 +234,7 @@ export const cancelBooking = async (req, res, next) => {
         }
         booking.status = 'Cancelled';
         await booking.save();
+        await cancelBookingEmail(req.user.email, bookingId, req.user.name, booking.totalPrice, refund ? refund.amount / 100 : 0);
         return res.status(200).json({
             message: 'Booking cancelled successfully' + (refund ? ' and refund initiated' : ''),
             refund
