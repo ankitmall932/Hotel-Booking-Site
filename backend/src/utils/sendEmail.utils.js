@@ -206,4 +206,29 @@ export const resetPasswordEmail = async (email, name) => {
     {
         throw new Error(err);
     }
-};;
+};
+
+export const deleteAccountEmail = async (email, name) => {
+    try
+    {
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
+            }
+        });
+        await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: email,
+            subject: 'This is your Account related email from Siddhi Hotels',
+            html: `<h1>Hello ${ name } </h1>
+                <br>
+                    <h1>Your Account Has Been Deleted</h1>
+                    <p>If you did not request this change, please contact our support team immediately.</p>`
+        });
+    } catch (err)
+    {
+        throw new Error(err);
+    }
+};
