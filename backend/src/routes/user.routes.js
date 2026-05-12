@@ -22,4 +22,10 @@ router.post('/bookings/:id/verify', protect, controller.verifyPayment);
 
 router.put('/bookings/:id/cancel', protect, controller.cancelBooking);
 
+router.post('/wishlist', protect, controller.createWishlist);
+
+router.get('/wishlist', protect, controller.getWishlist);
+
+router.delete('/wishlist/:id', protect, controller.deleteWishlistItem);
+
 export default router;

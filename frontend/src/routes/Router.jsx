@@ -26,6 +26,7 @@ import ImagePreview from '../pages/publics/ImagePreview';
 import CustomerRoute from './CustomerRoute';
 import StateListing from '../pages/publics/StateListing';
 import BookingPage from '../pages/costumer/BookingPage';
+import ShowWishlists from '../pages/users/ShowWishlists';
 
 function Router () {
     const router = createBrowserRouter([
@@ -97,6 +98,10 @@ function Router () {
                 {
                     path: '/users/account-settings',
                     element: <AccountSetting />
+                },
+                {
+                    path: '/wishlists',
+                    element: <ShowWishlists />
                 }
             ]
         },

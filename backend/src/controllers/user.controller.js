@@ -1,6 +1,7 @@
 import User from '../models/user.model.js';
 import Listing from '../models/listing.model.js';
 import Bookings from '../models/booking.model.js';
+import Wishlist from '../models/wishlist.model.js';
 import { isAvailable } from '../utils/isAvaliable.utils.js';
 import razorpayInstance from '../config/razorpay.js';
 import crypto from 'crypto';
@@ -239,6 +240,75 @@ export const cancelBooking = async (req, res, next) => {
         return res.status(200).json({
             message: 'Booking cancelled successfully' + (refund ? ' and refund initiated' : ''),
             refund
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
+
+export const createWishlist = async (req, res, next) => {
+    try
+    {
+        const { listingId } = req.body;
+        if (!listingId)
+        {
+            return res.status(400).json({
+                message: 'Listing ID is required'
+            });
+        }
+        const userId = req.user._id;
+        const listing = await Listing.findById(listingId);
+        if (!listing)
+        {
+            return res.status(404).json({
+                message: 'Listing not found'
+            });
+        }
+        const alreadyAdded = await Wishlist.findOne({ user: userId, listing: listingId });
+        if (alreadyAdded)
+        {
+            return res.status(400).json({
+                message: 'Listing already in wishlist'
+            });
+        }
+        const wishlistItem = await Wishlist.create({
+            user: userId,
+            listing: listingId
+        });
+        return res.status(201).json({
+            message: 'Listing added to wishlist',
+            wishlistItem
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
+
+export const getWishlist = async (req, res, next) => {
+    try
+    {
+        const userId = req.user._id;
+        const wishlistItems = await Wishlist.find({ user: userId }).populate('listing');
+        return res.status(200).json({
+            message: 'Wishlist retrieved successfully',
+            wishlist: wishlistItems
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
+
+export const deleteWishlistItem = async (req, res, next) => {
+    try
+    {
+        const listingId = req.params.id;
+        const userId = req.user._id;
+        await Wishlist.findOneAndDelete({ user: userId, listing: listingId });
+        return res.status(200).json({
+            message: 'Item removed from wishlist'
         });
     } catch (err)
     {

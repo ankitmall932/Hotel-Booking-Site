@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getListingsByState } from '../../api/user.api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
-
+import CreateWishlists from '../users/CreateWishlists';
 function StateListing () {
     const nav = useNavigate();
     const { stateName } = useParams();
@@ -136,13 +136,17 @@ function StateListing () {
                                     onClick={ () =>
                                         nav(`/customer/room/${ n._id }`)
                                     }
-                                    className='h-full w-110 p-5 rounded-2xl cursor-pointer flex flex-wrap gap-5'
-                                >
-                                    <img
-                                        src={ n.images[ 0 ].url }
-                                        alt={ n.name }
-                                        className='w-100 h-100 bg-cover rounded-2xl'
-                                    />
+                                    className='h-full w-110 p-5 rounded-2xl cursor-pointer flex flex-col gap-5' >
+                                    <div className='relative'>
+                                        <CreateWishlists
+                                            listingId={ n._id }
+                                        />
+                                        <img
+                                            src={ n.images[ 0 ].url }
+                                            alt={ n.name }
+                                            className='w-100 h-100 bg-cover rounded-2xl'
+                                        />
+                                    </div>
                                     <div className="flex flex-col justify-center gap-2">
                                         <h1 className='text-2xl font-semibold'>
                                             { n.name }
