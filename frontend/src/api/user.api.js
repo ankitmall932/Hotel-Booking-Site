@@ -44,16 +44,6 @@ export const createBooking = async (bookingData) => {
     }
 };
 
-export const getBookingById = async (id) => {
-    try
-    {
-        const res = await api.get(`/user/bookings/${ id }`);
-        return { data: res.data, error: null };
-    } catch (err)
-    {
-        return { data: null, error: err.response?.data?.message || 'fetching booking failed' };
-    }
-};//checking for room availability
 
 export const getUserBookings = async () => {
     try
@@ -108,5 +98,38 @@ export const cancelBooking = async (id) => {
     catch (err)
     {
         return { data: null, error: err.response?.data?.message || 'cancelling booking failed' };
+    }
+};
+
+export const createWishlist = async (listingId) => {
+    try
+    {
+        const res = await api.post('/user/wishlist', { listingId });
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'adding to wishlist failed' };
+    }
+};
+
+export const getWishlist = async () => {
+    try
+    {
+        const res = await api.get('/user/wishlist');
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'fetching wishlist failed' };
+    }
+};
+
+export const deleteWishlistItem = async (id) => {
+    try
+    {
+        const res = await api.delete(`/user/wishlist/${ id }`);
+        return { data: res.data, error: null };
+    } catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'deleting wishlist item failed' };
     }
 };

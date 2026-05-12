@@ -75,9 +75,10 @@ function Navbar () {
                             </div>
                             <div className=' gap-10 rounded-4xl flex justify-between items-center'>
                                 <button onClick={ () => switchUsers('owner') }>Switch to hosting</button>
-                                {/*                         <div>
-                            <NavLink to='about' className={ isActive }>About</NavLink>
-                        </div>
+                                <div>
+                                    <NavLink to='/wishlists' className={ isActive }>Wishlists</NavLink>
+                                </div>
+                                {/*
                         <div>
                             <NavLink to='/contact' className={ isActive }>Contact</NavLink>
                         </div> */}
