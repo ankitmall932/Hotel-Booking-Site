@@ -101,14 +101,14 @@ export const cancelBooking = async (id) => {
     }
 };
 
-export const createWishlist = async (listingId) => {
+export const toggleWishlist = async (listingId) => {
     try
     {
-        const res = await api.post('/user/wishlist', { listingId });
+        const res = await api.post(`/user/wishlist/${ listingId }`);
         return { data: res.data, error: null };
     } catch (err)
     {
-        return { data: null, error: err.response?.data?.message || 'adding to wishlist failed' };
+        return { data: null, error: err.response?.data?.message || 'toggling wishlist failed' };
     }
 };
 
@@ -120,16 +120,5 @@ export const getWishlist = async () => {
     } catch (err)
     {
         return { data: null, error: err.response?.data?.message || 'fetching wishlist failed' };
-    }
-};
-
-export const deleteWishlistItem = async (id) => {
-    try
-    {
-        const res = await api.delete(`/user/wishlist/${ id }`);
-        return { data: res.data, error: null };
-    } catch (err)
-    {
-        return { data: null, error: err.response?.data?.message || 'deleting wishlist item failed' };
     }
 };

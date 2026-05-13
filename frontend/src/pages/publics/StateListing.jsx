@@ -139,7 +139,7 @@ function StateListing () {
                                     className='h-full w-110 p-5 rounded-2xl cursor-pointer flex flex-col gap-5' >
                                     <div className='relative'>
                                         <CreateWishlists
-                                            listingId={ n._id }
+                                            listing={ n }
                                         />
                                         <img
                                             src={ n.images[ 0 ].url }
