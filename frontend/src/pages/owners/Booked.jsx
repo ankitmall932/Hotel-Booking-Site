@@ -27,7 +27,7 @@ function Booked () {
     };
 
     const totalEarnings = bookings.reduce((total, booking) => {
-        if (booking.status === 'Confirmed')
+        if (booking.status === 'Confirmed' || booking.status === 'Completed')
         {
             return total + booking.totalPrice;
         }
@@ -51,6 +51,7 @@ function Booked () {
                             { booking.status === 'Pending' && <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pending</p> }
                             { booking.status === 'Confirmed' && <p className='bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed'>Confirmed</p> }
                             { booking.status === 'Cancelled' && <p className='bg-red-500 text-white px-4 py-2 rounded cursor-not-allowed'>Cancelled</p> }
+                            { booking.status === 'Completed' && <p className='bg-blue-500 text-white px-4 py-2 rounded cursor-not-allowed'>Completed</p> }
                         </div>
                         <div className='flex flex-col gap-2 w-80'>
                             <h2 className='text-xl font-semibold'>{ booking.listing.name }</h2>
