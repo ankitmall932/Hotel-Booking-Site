@@ -1,40 +1,20 @@
 import React from 'react';
-import { toast } from 'react-toastify';
 import { Heart } from 'lucide-react';
-import { useWishlist } from '../../context/WishlistContext';
+import { useWishlistStore } from '../../store/wishlistStore';
 
-function CreateWishlists ({ listingId }) {
-    const { isWishlisted, toggleWishlist, loading } = useWishlist();
-
-    const handleCreateWishlist = async (event) => {
-        event.stopPropagation();
-        if (loading) return;
-        const currentlyWishlisted = isWishlisted(listingId);
-        const { error, message } = await toggleWishlist(listingId, currentlyWishlisted);
-        if (error)
-        {
-            toast.error(error);
-        } else
-        {
-            toast.success(message);
-        }
+function CreateWishlists ({ listing }) {
+    const { toggleWishlist, isWishlisted } = useWishlistStore();
+    const wishlisted = isWishlisted(listing._id);
+    const handleWishlistToggle = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleWishlist(listing);
     };
 
     return (
-        <div className='absolute top-3 right-3 '>
-            <button
-                type='button'
-                onClick={ handleCreateWishlist }
-                disabled={ loading }
-                className='w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center border border-gray-200'
-            >
-                <Heart
-                    color={ isWishlisted(listingId) ? '#bd1414' : 'black' }
-                    fill={ isWishlisted(listingId) ? '#bd1414' : 'none' }
-                    size={ 20 }
-                />
-            </button>
-        </div>
+        <button className='absolute top-3 right-3 z-10  p-3 rounded-full bg-white shadow-lg' onClick={ handleWishlistToggle }>
+            <Heart className={ `w-5 h-5 ${ wishlisted ? 'fill-red-500 text-red-500' : 'text-gray-500' }` } />
+        </button>
     );
 }
 

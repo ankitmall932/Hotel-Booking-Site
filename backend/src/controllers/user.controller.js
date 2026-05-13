@@ -247,38 +247,22 @@ export const cancelBooking = async (req, res, next) => {
     }
 };
 
-export const createWishlist = async (req, res, next) => {
+export const toggleWishlist = async (req, res, next) => {
     try
     {
-        const { listingId } = req.body;
-        if (!listingId)
-        {
-            return res.status(400).json({
-                message: 'Listing ID is required'
-            });
-        }
+        const listingId = req.params.listingId;
         const userId = req.user._id;
-        const listing = await Listing.findById(listingId);
-        if (!listing)
+        const existingItem = await Wishlist.findOne({ user: userId, listing: listingId });
+        if (existingItem)
         {
-            return res.status(404).json({
-                message: 'Listing not found'
+            await Wishlist.findByIdAndDelete(existingItem._id);
+            return res.status(200).json({
+                message: 'Listing removed from wishlist'
             });
         }
-        const alreadyAdded = await Wishlist.findOne({ user: userId, listing: listingId });
-        if (alreadyAdded)
-        {
-            return res.status(400).json({
-                message: 'Listing already in wishlist'
-            });
-        }
-        const wishlistItem = await Wishlist.create({
-            user: userId,
-            listing: listingId
-        });
+        await Wishlist.create({ user: userId, listing: listingId });
         return res.status(201).json({
-            message: 'Listing added to wishlist',
-            wishlistItem
+            message: 'Listing added to wishlist'
         });
     } catch (err)
     {
@@ -290,25 +274,10 @@ export const getWishlist = async (req, res, next) => {
     try
     {
         const userId = req.user._id;
-        const wishlistItems = await Wishlist.find({ user: userId }).populate('listing');
+        const wishlist = await Wishlist.find({ user: userId }).populate('listing');
         return res.status(200).json({
             message: 'Wishlist retrieved successfully',
-            wishlist: wishlistItems
-        });
-    } catch (err)
-    {
-        next(err);
-    }
-};
-
-export const deleteWishlistItem = async (req, res, next) => {
-    try
-    {
-        const listingId = req.params.id;
-        const userId = req.user._id;
-        await Wishlist.findOneAndDelete({ user: userId, listing: listingId });
-        return res.status(200).json({
-            message: 'Item removed from wishlist'
+            wishlist
         });
     } catch (err)
     {
