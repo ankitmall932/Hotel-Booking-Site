@@ -5,6 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useNavigate, NavLink } from 'react-router-dom';
 import DeviceHistory from './DeviceHistory';
 import { deleteAccount } from '../../api/auth.api';
+import { useWishlistStore } from '../../store/wishlistStore';
 
 function AccountSetting () {
     const { setUser } = useAuth();
@@ -16,6 +17,7 @@ function AccountSetting () {
             toast.error(error);
             return;
         }
+        useWishlistStore.getState().clearWishlist();
         setUser(null);
         toast.success(res.message || 'User logged out successfully');
         nav('/');
@@ -27,6 +29,7 @@ function AccountSetting () {
             toast.error(error);
             return;
         }
+        useWishlistStore.getState().clearWishlist();
         setUser(null);
         toast.success(res.message || 'User logged out successfully');
         nav('/');
@@ -43,6 +46,7 @@ function AccountSetting () {
             toast.error(error);
             return;
         }
+        useWishlistStore.getState().clearWishlist();
         setUser(null);
         toast.success(res.message || 'Account deleted successfully');
         nav('/');
