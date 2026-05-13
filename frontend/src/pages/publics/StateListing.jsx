@@ -25,6 +25,7 @@ function StateListing () {
                 toast.error(error);
                 return;
             }
+            localStorage.setItem('stateName', stateName);
             setListings(data.listings);
             setLoading(false);
         };
@@ -147,7 +148,7 @@ function StateListing () {
                                             className='w-100 h-100 bg-cover rounded-2xl'
                                         />
                                     </div>
-                                    <div className="flex flex-col justify-center gap-2">
+                                    <div className="flex flex-col justify-center">
                                         <h1 className='text-2xl font-semibold'>
                                             { n.name }
                                         </h1>

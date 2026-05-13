@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from 'react';
 import Router from './routes/Router';
 import { ToastContainer } from 'react-toastify';

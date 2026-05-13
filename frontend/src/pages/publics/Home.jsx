@@ -2,6 +2,7 @@ import React from 'react';
 import HomePageAnimation from '../animations/HomePageAnimation';
 import Destination from './Destination';
 import FeatureDestination from './FeatureDestination';
+import ListingSuggestion from './ListingSuggestion';
 function Home () {
     return (
         <>
@@ -14,6 +15,7 @@ function Home () {
                     </div>
                 </div>
             </div>
+            <ListingSuggestion />
             <Destination />
             <h1 className="text-3xl font-bold text-center m-4">Featured Destinations</h1>
             <FeatureDestination />
