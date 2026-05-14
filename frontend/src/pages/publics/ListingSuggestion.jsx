@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getListingsByState } from '../../api/user.api';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import CreateWishlists from '../users/CreateWishlists';
 function ListingSuggestion () {
     const nav = useNavigate();
     const [ listings, setListings ] = useState([]);
@@ -39,6 +40,9 @@ function ListingSuggestion () {
                                 }
                                 className='h-100 w-60 p-5 rounded-2xl cursor-pointer flex flex-col gap-5 ' >
                                 <div className='relative'>
+                                    <CreateWishlists
+                                        listing={ n }
+                                    />
                                     <img
                                         src={ n.images[ 0 ].url }
                                         alt={ n.name }
@@ -65,7 +69,6 @@ function ListingSuggestion () {
                 </div>
             ) }
         </div>
-
     );
 }
 
