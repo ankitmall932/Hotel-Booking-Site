@@ -17,6 +17,7 @@
     "@mui/icons-material": "^9.0.0",
     "@mui/material": "^9.0.0",
     "@tailwindcss/vite": "^4.2.2",
+    "@vercel/speed-insights": "^2.0.0",
     "axios": "^1.15.0",
     "date-fns": "^4.1.0",
     "leaflet": "^1.9.4",

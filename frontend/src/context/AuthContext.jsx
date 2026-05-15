@@ -13,23 +13,31 @@ export const AuthProvider = ({ children }) => {
     const [ loading, setLoading ] = useState(true);
     useEffect(() => {
         const init = async () => {
+            const token = localStorage.getItem('accessToken');
+            if (!token)
+            {
+                setUser(null);
+                setLoading(false);
+                return;
+            }
             try
             {
-                const res = await refreshApi();
-                if (res?.data?.accessToken)
-                {
-                    const profileResponse = await profile();
-                    setUser(profileResponse.data);
-                } else
-                {
-                    setUser(null);
-                }
+                const profileResponse = await profile();
+                setUser(profileResponse.data);
             } catch
             {
-                console.log('error');
-                setUser(null);
-            }
-            finally
+                try
+                {
+                    const res = await refreshApi();
+                    localStorage.setItem('accessToken', res.data.accessToken);
+                    const profileResponse = await profile();
+                    setUser(profileResponse.data);
+                } catch
+                {
+                    localStorage.removeItem('accessToken');
+                    setUser(null);
+                }
+            } finally
             {
                 setLoading(false);
             }
