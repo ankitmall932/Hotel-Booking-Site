@@ -1,17 +1,11 @@
 import nodemailer from 'nodemailer';
+import { transporter } from './mailer.js';
 
 export const registerEmail = async (email, otp, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'Your OTP for Siddhi Hotels Email Verification',
             html: `<h1>Hello ${ name } </h1>
@@ -28,15 +22,8 @@ export const registerEmail = async (email, otp, name) => {
 export const registeredEmail = async (email, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'You are successfully registered on Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
@@ -54,15 +41,8 @@ export const registeredEmail = async (email, name) => {
 export const loginEmail = async (email, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'You have successfully logged in to Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
@@ -79,15 +59,8 @@ export const loginEmail = async (email, name) => {
 export const createPaymentEmail = async (email, bookingId, name, totalPrice) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'Your Payment Confirmation for Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
@@ -105,15 +78,8 @@ export const createPaymentEmail = async (email, bookingId, name, totalPrice) => 
 export const confirmPaymentEmail = async (email, bookingId, name, totalPrice, checkInDate, checkOutDate) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'Your Payment Confirmation for Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
@@ -134,15 +100,8 @@ export const confirmPaymentEmail = async (email, bookingId, name, totalPrice, ch
 export const cancelBookingEmail = async (email, bookingId, name, totalPrice, refundAmount) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'Your Booking has been Cancelled',
             html: `<h1>Hello ${ name } </h1>
@@ -161,15 +120,8 @@ export const cancelBookingEmail = async (email, bookingId, name, totalPrice, ref
 export const resetPasswordOtpEmail = async (email, otpCode, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'Your OTP for Siddhi Hotels Email Verification',
             html: `<h1>Hello ${ name } </h1>
@@ -186,15 +138,8 @@ export const resetPasswordOtpEmail = async (email, otpCode, name) => {
 export const resetPasswordEmail = async (email, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'This is your Account related email from Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
@@ -211,15 +156,8 @@ export const resetPasswordEmail = async (email, name) => {
 export const deleteAccountEmail = async (email, name) => {
     try
     {
-        const transporter = nodemailer.createTransport({
-            service: 'gmail',
-            auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
-            }
-        });
         await transporter.sendMail({
-            from: process.env.EMAIL,
+            from: `"Siddhi Hotels" <${ process.env.MAIL_FROM } >`,
             to: email,
             subject: 'This is your Account related email from Siddhi Hotels',
             html: `<h1>Hello ${ name } </h1>
