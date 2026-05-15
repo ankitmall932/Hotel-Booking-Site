@@ -21,5 +21,13 @@ export const transporter = nodemailer.createTransport({
     socketTimeout: 10000
 });
 
-await transporter.verify();
-console.log("SMTP connected successfully");
+(async () => {
+    try
+    {
+        await transporter.verify();
+        console.log("SMTP connected");
+    } catch (err)
+    {
+        console.error(err);
+    }
+})();
