@@ -8,6 +8,7 @@ import userRouter from './routes/user.routes.js';
 import { globalErrorHandler } from './middleware/global.error.js';
 import ownerRouter from './routes/owner.routes.js';
 import reviewRouter from './routes/review.route.js';
+import './utils/cron.js';
 
 
 const app = express();

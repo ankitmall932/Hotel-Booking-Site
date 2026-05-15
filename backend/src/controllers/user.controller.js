@@ -88,6 +88,7 @@ export const createBooking = async (req, res, next) => {
             });
         }
         const nights = (new Date(checkOutDate) - new Date(checkInDate)) / (1000 * 60 * 60 * 24);
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
         const booking = await Bookings.create({
             user: req.user._id,
             listing: listingId,
@@ -95,11 +96,48 @@ export const createBooking = async (req, res, next) => {
             checkOutDate,
             owner: listing.owner,
             status: 'Pending',
-            totalPrice: nights * listing.price
+            totalPrice: nights * listing.price,
+            expiresAt
         });
         return res.status(201).json({
             message: 'Booking created successfully',
             booking
+        });
+    } catch (err)
+    {
+        next(err);
+    }
+};
+
+export const confirmCODBooking = async (req, res, next) => {
+    try
+    {
+        const { bookingId } = req.params;
+        const booking = await Bookings.findById(bookingId);
+        if (!booking)
+        {
+            return res.status(404).json({
+                message: 'Booking not found'
+            });
+        }
+        if (booking.expiresAt < new Date())
+        {
+            return res.status(400).json({
+                message: 'Booking has expired'
+            });
+        }
+        const updatedBooking = await Bookings.findByIdAndUpdate(
+            bookingId,
+            {
+                status: 'Confirmed',
+                paymentMethod: 'Pay_on_Property',
+                $unset: { expiresAt: 1 }
+            },
+            { new: true }
+        );
+        return res.status(200).json({
+            message: 'Booking confirmed successfully',
+            booking: updatedBooking
         });
     } catch (err)
     {

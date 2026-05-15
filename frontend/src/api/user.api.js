@@ -44,6 +44,18 @@ export const createBooking = async (bookingData) => {
     }
 };
 
+export const confirmCODBooking = async (bookingId) => {
+    try
+    {
+        const res = await api.patch(`/user/confirm-cod/${ bookingId }`);
+        return { data: res.data, error: null };
+    }
+    catch (err)
+    {
+        return { data: null, error: err.response?.data?.message || 'confirming COD booking failed' };
+    }
+};
+
 
 export const getUserBookings = async () => {
     try
