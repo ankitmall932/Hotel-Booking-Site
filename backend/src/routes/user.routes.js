@@ -14,6 +14,8 @@ router.get('/bookings', protect, controller.getUserBookings);
 
 router.post('/bookings', protect, controller.createBooking);
 
+router.patch('/confirm-cod/:bookingId', protect, controller.confirmCODBooking);
+
 router.delete('/bookings/:id', protect, controller.deleteBooking);
 
 router.post('/bookings/:id/create-order', protect, controller.createPaymentOrder);

@@ -30,12 +30,21 @@ const bookingSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: [ 'Pending', 'Confirmed', 'Cancelled', 'Completed' ],
+        enum: [ 'Pending', 'Confirmed', 'Cancelled', 'Completed', 'Expired' ],
         default: 'Pending'
     },
     razorpay_payment_id: {
         type: String
     },
+    expiresAt: {
+        type: Date,
+        required: true
+    },
+    paymentMethod: {
+        type: String,
+        enum: [ 'Razorpay', 'Pay_on_Property' ],
+        default: null
+    }
 }, { timestamps: true });
 
 export default mongoose.models.Booking || mongoose.model('Booking', bookingSchema);
