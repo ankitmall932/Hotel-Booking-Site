@@ -54,8 +54,8 @@ export const register = async (req, res, next) => {
                 isVerified: false
             });
         }
-        await registerEmail(email, otp, name);
-        return res.status(201).json({
+/*         await registerEmail(email, otp, name);
+ */        return res.status(201).json({
             message: 'User Register Successfully, Please Check Your Email for Otp'
         });
     } catch (err)
@@ -88,8 +88,8 @@ export const resendOtp = async (req, res, next) => {
         user.otpExpired = new Date(Date.now() + 5 * 60 * 1000);
         user.otpLastSent = now;
         await user.save();
-        await registerEmail(email, otp, user.name);
-        return res.status(200).json({
+/*         await registerEmail(email, otp, user.name);
+ */        return res.status(200).json({
             message: 'OTP resent successfully, Please Check Your Email'
         });
     } catch (err)
@@ -159,8 +159,8 @@ export const verifyOtp = async (req, res, next) => {
             secure: isProduction,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
-        await registeredEmail(email, user.name);
-        res.status(200).json({
+/*         await registeredEmail(email, user.name);
+ */        res.status(200).json({
             message: 'User register and verified Successfully',
             accessToken,
             user: {
@@ -228,8 +228,8 @@ export const login = async (req, res, next) => {
             secure: isProduction,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
-        await loginEmail(email, user.name);
-        res.status(200).json({
+/*       await loginEmail(email, user.name);
+ */        res.status(200).json({
             message: `Welcome Back ${ user.name }😎😎`,
             accessToken,
             user: {
@@ -285,8 +285,8 @@ export const resetPassword = async (req, res, next) => {
                 otp: otpCode,
                 expiry: Date.now() + 10 * 60 * 1000
             };
-            await resetPasswordOtpEmail(email, otpCode, user.name);
-            return res.status(200).json({
+/*             await resetPasswordOtpEmail(email, otpCode, user.name);
+ */            return res.status(200).json({
                 message: 'OTP sent to your email',
             });
         }
@@ -316,8 +316,8 @@ export const resetPassword = async (req, res, next) => {
                 { email },
                 { password: hashPass }
             );
-            await resetPasswordEmail(email, user.name);
-            delete otpStore[ email ];
+/*             await resetPasswordEmail(email, user.name);
+ */            delete otpStore[ email ];
             return res.status(200).json({
                 message: 'password reset successfully'
             });
@@ -485,8 +485,8 @@ export const deleteAccount = async (req, res, next) => {
             user: userId
         });
         await User.findByIdAndDelete(userId);
-        await deleteAccountEmail(req.user.email, req.user.name);
-        res.clearCookie('refreshToken', {
+/*         await deleteAccountEmail(req.user.email, req.user.name);
+ */        res.clearCookie('refreshToken', {
             httpOnly: true,
             sameSite: isProduction ? 'none' : 'lax',
             secure: isProduction
