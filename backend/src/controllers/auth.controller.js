@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user.model.js';
@@ -99,6 +100,7 @@ export const resendOtp = async (req, res, next) => {
 export const verifyOtp = async (req, res, next) => {
     try
     {
+        const isProduction = process.env.NODE_ENV === 'production';
         let { email, otp } = req.body;
         email = email.toLowerCase();
         const user = await User.findOne({ email });
@@ -153,8 +155,8 @@ export const verifyOtp = async (req, res, next) => {
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
         await registeredEmail(email, user.name);
@@ -176,6 +178,7 @@ export const verifyOtp = async (req, res, next) => {
 export const login = async (req, res, next) => {
     try
     {
+        const isProduction = process.env.NODE_ENV === 'production';
         let { email, password } = req.body;
         email = email.toLowerCase();
         const user = await User.findOne({ email });
@@ -221,8 +224,8 @@ export const login = async (req, res, next) => {
         });
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
-            sameSite: 'lax',
-            secure: false,
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction,
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
         await loginEmail(email, user.name);
@@ -366,6 +369,7 @@ export const refresh = async (req, res, next) => {
 export const logout = async (req, res, next) => {
     try
     {
+        const isProduction = process.env.NODE_ENV === 'production';
         const token = req.cookies.refreshToken;
         if (!token)
         {
@@ -377,7 +381,11 @@ export const logout = async (req, res, next) => {
             { refreshToken: token },
             { revoked: true }
         );
-        res.clearCookie('refreshToken');
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction
+        });
         res.json({
             message: 'Logged out Successfully'
         });
@@ -390,14 +398,24 @@ export const logout = async (req, res, next) => {
 export const logoutAll = async (req, res, next) => {
     try
     {
+        const isProduction = process.env.NODE_ENV === 'production';
         const token = req.cookies.refreshToken;
+        if (!token)
+        {
+            return res.status(400).json({
+                message: 'Token not found'
+            });
+        }
         const decoded = jwt.verify(token, process.env.JWT_REFRESH_TOKEN);
-        await Session.updateMany(
-            { user: decoded.id },
-            { revoked: true }
-        );
-        res.clearCookie('refreshToken');
-        res.json({ message: 'Logout from all device are successfully' });
+        await Session.updateMany({ user: decoded.id }, { revoked: true });
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction
+        });
+        res.json({
+            message: 'Logged out from all devices successfully'
+        });
     } catch (err)
     {
         next(err);
@@ -434,12 +452,13 @@ export const switchUser = async (req, res, next) => {
 export const deleteAccount = async (req, res, next) => {
     try
     {
+        const isProduction = process.env.NODE_ENV === 'production';
         const userId = req.user._id;
         const listings = await Listing.find({ owner: userId });
         const listingIds = listings.map(listing => listing._id);
         for (const listing of listings)
         {
-            if (listing.images && listing.images.length > 0)
+            if (listing.images?.length > 0)
             {
                 for (const image of listing.images)
                 {
@@ -459,9 +478,19 @@ export const deleteAccount = async (req, res, next) => {
         await Listing.deleteMany({
             owner: userId
         });
+        await Session.deleteMany({
+            user: userId
+        });
+        await Device.deleteMany({
+            user: userId
+        });
         await User.findByIdAndDelete(userId);
         await deleteAccountEmail(req.user.email, req.user.name);
-        res.clearCookie('token');
+        res.clearCookie('refreshToken', {
+            httpOnly: true,
+            sameSite: isProduction ? 'none' : 'lax',
+            secure: isProduction
+        });
         return res.status(200).json({
             message: 'Account Deleted Successfully'
         });
