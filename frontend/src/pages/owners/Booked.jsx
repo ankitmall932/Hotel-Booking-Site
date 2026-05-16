@@ -47,17 +47,22 @@ function Booked () {
                         <div onClick={ () => nav(`/host/listing/${ booking.listing._id }`) } className='flex items-center gap-4 cursor-pointer'>
                             <img src={ booking.listing.images[ 0 ].url } alt={ booking.listing.name } className='w-48 h-48 object-cover rounded' />
                         </div>
-                        <div>
+                        <div className='flex flex-col gap-2 w-80'>
                             { booking.status === 'Pending' && <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pending</p> }
                             { booking.status === 'Confirmed' && <p className='bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed'>Confirmed</p> }
                             { booking.status === 'Cancelled' && <p className='bg-red-500 text-white px-4 py-2 rounded cursor-not-allowed'>Cancelled</p> }
                             { booking.status === 'Completed' && <p className='bg-blue-500 text-white px-4 py-2 rounded cursor-not-allowed'>Completed</p> }
+                            { booking.paymentMethod === 'Pay_on_Property' ? (
+                                <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pay at Property</p>
+                            ) : (
+                                <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Online</p>
+                            ) }
                         </div>
                         <div className='flex flex-col gap-2 w-80'>
-                            <h2 className='text-xl font-semibold'>{ booking.listing.name }</h2>
+                            <h2 className='text-xl font-semibold'>{ booking.listing?.name }</h2>
                             <h2 className='text-lg '>Total Price : { booking.totalPrice.toFixed(2) }</h2>
-                            <h3>Booked by: { booking.user.name }</h3>
-                            <h3>{ booking.user.email }</h3>
+                            <h3>Booked by: { booking.user?.name }</h3>
+                            <h3>{ booking.user?.email }</h3>
                             <p className='text-gray-600'>{ formatDate(booking.checkInDate) } - { formatDate(booking.checkOutDate) }</p>
                         </div>
                     </div>
