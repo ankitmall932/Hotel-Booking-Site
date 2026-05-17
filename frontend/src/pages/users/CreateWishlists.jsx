@@ -12,8 +12,8 @@ function CreateWishlists ({ listing }) {
     };
 
     return (
-        <button className='absolute top-3 right-3 z-10  p-3 rounded-full bg-white shadow-lg' onClick={ handleWishlistToggle }>
-            <Heart className={ `w-5 h-5 ${ wishlisted ? 'fill-red-500 text-red-500' : 'text-gray-500' }` } />
+        <button className='absolute top-3 right-3 z-10  sm:p-3 p-2 rounded-full bg-white shadow-lg' onClick={ handleWishlistToggle }>
+            <Heart className={ `sm:w-5 sm:h-5 w-4 h-4 ${ wishlisted ? 'fill-red-500 text-red-500' : 'text-gray-500' }` } />
         </button>
     );
 }

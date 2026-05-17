@@ -16,7 +16,7 @@ export default function RegisterAnimation () {
                 ] }
                 speed={ 50 }
                 repeat={ Infinity }
-                className="text-4xl font-bold text-black"
+                className="lg:text-4xl sm:text-xl text-lg font-bold text-black"
             />
         </div>
     );

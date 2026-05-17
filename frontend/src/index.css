@@ -1,7 +1,16 @@
 @import "tailwindcss";
 
+@layer utilities{
+  .no-scrollbar::-webkit-scrollbar{
+    display: none;
+  }
+}
+.no-scrollbar{
+  -ms-overflow-style:none;
+  scrollbar-width: none;
+}
 
-
+/* this is for page not found */
 #oopss {
   background: linear-gradient(-45deg, #fff300, #efe400);
   position: fixed;
