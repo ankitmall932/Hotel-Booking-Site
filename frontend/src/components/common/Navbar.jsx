@@ -45,7 +45,7 @@ function Navbar () {
         <div>
             { !user ? (
                 <>
-                    <div className=' hidden px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 sm:flex justify-between items-center h-16'>
+                    <div className=' hidden px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 md:flex justify-between items-center h-16'>
                         <div>
                             <NavLink to='/' className='text-4xl font-bold'>
                                 <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-18 w-40' />
@@ -67,7 +67,7 @@ function Navbar () {
                             </div>
                         </div>
                     </div>
-                    <div className=' sm:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
+                    <div className=' md:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
                         <div>
                             <NavLink to='/' className='text-4xl font-bold'>
                                 <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-15 w-30' />
@@ -101,7 +101,7 @@ function Navbar () {
                 <>
                     { user.currentRole === 'customer' ? (
                         <>
-                            <div className=' hidden sm:flex px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50  justify-between items-center h-16'>
+                            <div className=' hidden md:flex px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50  justify-between items-center h-16'>
                                 <div>
                                     <NavLink to='/' className='text-4xl font-bold'>
                                         <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-18 w-40' />
@@ -121,7 +121,7 @@ function Navbar () {
                                     </div>
                                 </div>
                             </div>
-                            <div className=' sm:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
+                            <div className=' md:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
                                 <div>
                                     <NavLink to='/' className='text-4xl font-bold'>
                                         <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-15 w-30' />
@@ -146,6 +146,12 @@ function Navbar () {
                                                     <NavLink to='/wishlists' className={ isActive }>Wishlists</NavLink>
                                                 </div>
                                                 <div>
+                                                    <NavLink to='/users/past-trips' className={ isActive }>Bookings</NavLink>
+                                                </div>
+                                                <div>
+                                                    <NavLink to='/users/account-settings' className={ isActive }>Account Settings</NavLink>
+                                                </div>
+                                                <div>
                                                     <button onClick={ () => switchUsers('owner') }>Switch to hosting</button>
                                                 </div>
                                             </div>
@@ -156,7 +162,7 @@ function Navbar () {
                         </>
                     ) : (
                         <>
-                            <div className='hidden sm:flex px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50  justify-between items-center h-16'>
+                            <div className='hidden md:flex px-10 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50  justify-between items-center h-16'>
                                 <div>
                                     <NavLink to='/host/dashboard' className='text-4xl font-bold'>
                                         <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-18 w-40' />
@@ -178,9 +184,9 @@ function Navbar () {
                                     </div>
                                 </div>
                             </div>
-                            <div className=' sm:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
+                            <div className=' md:hidden px-5 bg-gray-100 shadow-2xl fixed top-0 left-0 right-0 z-50 flex justify-between items-center h-12'>
                                 <div>
-                                    <NavLink to='/' className='text-4xl font-bold'>
+                                    <NavLink to='/host/dashboard' className='text-4xl font-bold'>
                                         <img src="/Luxurious Siddhi Hotels logo design.png" alt="logo" className='h-15 w-30' />
                                     </NavLink>
                                 </div>
@@ -207,6 +213,9 @@ function Navbar () {
                                                 </div>
                                                 <div>
                                                     <NavLink to='/host/createListings' className={ isActive }>Create New</NavLink>
+                                                </div>
+                                                <div>
+                                                    <NavLink to='/users/account-settings'>Account Settings</NavLink>
                                                 </div>
                                                 <div>
                                                     <button onClick={ () => switchUsers('customer') }>Switch  to customer</button>

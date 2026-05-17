@@ -8,11 +8,11 @@ function ProfileRoute () {
     return (
         <div >
             <Navbar />
-            <div className='flex pt-16'>
-                <div className="w-[25%]">
+            <div className='flex md:flex-row flex-col pt-16'>
+                <div className="md:w-[25%] w-full">
                     <Profile />
                 </div>
-                <div className="w-[75%]">
+                <div className="md:w-[75%] w-full">
                     <Outlet />
                 </div>
             </div>
