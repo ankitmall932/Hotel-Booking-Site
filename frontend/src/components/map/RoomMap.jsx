@@ -18,8 +18,8 @@ function RoomMap ({ listing }) {
     const lat = listing.geometry.coordinates[ 1 ];
     const lng = listing.geometry.coordinates[ 0 ];
     return (
-        <div className='h-125 p-5 rounded-2xl w-full overflow-hidden'>
-            <MapContainer center={ [ lat, lng ] } zoom={ 12 } scrollWheelZoom={ true } className='h-full w-full'>
+        <div className='lg:h-125 sm:h-100 h-60 p-1 rounded-2xl w-full  overflow-hidden'>
+            <MapContainer center={ [ lat, lng ] } zoom={ 12 } scrollWheelZoom={ false } className='h-full w-full'>
                 <TileLayer attribution='&copy; OpenStreetMap contributors'
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
                 <Marker position={ [ lat, lng ] }>

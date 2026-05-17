@@ -28,8 +28,8 @@ function CreateReview () {
         window.location.reload();
     };
     return (
-        <div className='w-full h-full p-10  gap-5 border-t-2 border-gray-300 mt-10'>
-            <form onSubmit={ handleSubmit } className='w-full h-full flex flex-col gap-5 px-15 py-2 border border-gray-300 rounded-md'>
+        <div className='w-full h-full sm:p-10 p-0  gap-5 border-t-2 border-gray-300 mt-10'>
+            <form onSubmit={ handleSubmit } className='w-full h-full flex flex-col gap-5 sm:px-15 px-2 py-2 border border-gray-300 rounded-md'>
                 <Typography variant="h6" gutterBottom>Give us your rating</Typography>
                 <Rating
                     value={ value }
@@ -39,7 +39,7 @@ function CreateReview () {
                 />
                 <textarea
                     placeholder="Write your review here..."
-                    className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    className='border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 w-full focus:ring-blue-500'
                     value={ comment }
                     onChange={ (e) => setComment(e.target.value) }
                 ></textarea>

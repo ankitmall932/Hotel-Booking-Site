@@ -61,15 +61,15 @@ function StateListing () {
             <h1 className="text-2xl font-bold mb-4">
                 Hotels in { stateName }
             </h1>
-            <div className='flex mb-5 justify-between items-center relative'>
+            <div className='flex mb-5 sm:justify-between gap-2 items-center  relative'>
                 <input
                     type="text"
                     placeholder="Search listings..."
                     value={ searchTerm }
                     onChange={ (e) => setSearchTerm(e.target.value) }
-                    className="w-100 p-2 border border-gray-300 rounded "
+                    className="sm:w-100 w-full p-2 border border-gray-300 rounded "
                 />
-                <div className='relative'>
+                <div className='relative '>
                     <button
                         onClick={ () => setShowFilter(!showFilter) }
                         className='py-2 px-4 bg-red-500 rounded text-white'
@@ -78,7 +78,7 @@ function StateListing () {
                     </button>
                     {
                         showFilter && (
-                            <div className='absolute right-20 top-0 w-70 bg-white shadow-2xl border rounded-2xl p-5 flex flex-col gap-5 z-50'>
+                            <div className='absolute right-20  top-0 sm:w-70 w-fit bg-white shadow-2xl border rounded-2xl p-5 flex flex-col gap-5 z-50'>
                                 <div className='flex flex-col gap-2'>
                                     <label className='font-semibold'>
                                         Sort By Price
@@ -129,7 +129,7 @@ function StateListing () {
                 filteredListings.length === 0 ? (
                     <p>No listings found.</p>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-3 grid-cols-2 gap-3">
                         {
                             filteredListings.map((n) => (
                                 <div
@@ -137,7 +137,7 @@ function StateListing () {
                                     onClick={ () =>
                                         nav(`/customer/room/${ n._id }`)
                                     }
-                                    className='h-full w-110 p-5 rounded-2xl cursor-pointer flex flex-col gap-5' >
+                                    className='h-full w-full  rounded-2xl cursor-pointer flex flex-col gap-1' >
                                     <div className='relative'>
                                         <CreateWishlists
                                             listing={ n }
@@ -145,20 +145,17 @@ function StateListing () {
                                         <img
                                             src={ n.images[ 0 ].url }
                                             alt={ n.name }
-                                            className='w-100 h-100 bg-cover rounded-2xl'
+                                            className='w-full lg:h-60 md:h-50 sm:h-40 h-35 bg-cover rounded-2xl'
                                         />
                                     </div>
                                     <div className="flex flex-col justify-center">
-                                        <h1 className='text-2xl font-semibold'>
+                                        <h1 className='md:text-2xl text-lg font-semibold'>
                                             { n.name }
                                         </h1>
-                                        <h1>
+                                        <h1 className='text-sm md:text-base font-medium text-gray-600'>
                                             ₹{ n.price } / per night
                                         </h1>
-                                        <h3>
-                                            { n.location.state }
-                                        </h3>
-                                        <h3>
+                                        <h3 className='text-sm md:text-base font-medium text-gray-600'>
                                             { n.location.city }
                                         </h3>
                                     </div>

@@ -19,9 +19,9 @@ function ImagePreview () {
         data();
     }, [ id ]);
     return (
-        <div className='h-full w-full p-15'>
+        <div className='h-full w-full sm:p-15 p-2'>
             { images && (
-                <img src={ images.url } alt="" />
+                <img src={ images.url } alt="" className='object-cover lg:h-150 sm:h-100 h-80 rounded-2xl w-full' />
             ) }
         </div>
     );

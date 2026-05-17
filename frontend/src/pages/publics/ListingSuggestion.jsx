@@ -51,7 +51,7 @@ function ListingSuggestion () {
                                     <h1 className='sm:text-xl text-sm font-semibold'>
                                         { n.name }
                                     </h1>
-                                    <h1 className='sm:text-lg text-sm font-semibold text-gray-500'>
+                                    <h1 className='sm:text-sm text-xs font-semibold text-gray-500'>
                                         ₹{ n.price } / per night
                                     </h1>
                                 </div>
