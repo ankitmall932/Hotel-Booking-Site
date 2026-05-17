@@ -17,7 +17,7 @@ export default function HomePageAnimation () {
                 }
                 speed={ 50 }
                 repeat={ Infinity }
-                className="text-6xl font-bold text-white"
+                className="lg:text-6xl sm:text-4xl text-xl font-bold text-white"
             />
         </div>
     );

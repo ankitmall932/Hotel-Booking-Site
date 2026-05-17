@@ -30,7 +30,7 @@ function Destination () {
         },
         {
             name: 'Goa',
-            image: 'https://www.shutterstock.com/image-photo/historic-white-st-anthonys-church-260nw-2603151233.jpg'
+            image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk2L43qnYG89HS8X101Ajq1LQAKxh2WfVrYct5cmVRld0QbghGqBnu4vA&s'
         },
         {
             name: 'Meghalaya',
@@ -46,11 +46,11 @@ function Destination () {
         }
     ];
     return (
-        <div className='h-full w-full flex flex-wrap justify-start pl-15 items-start '>
+        <div className='h-full w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4  lg:gap-6 gap-4 lg:p-4 p-1'>
             { states.map((state) => (
-                <div onClick={ () => nav(`/customer/state/${ state.name }`) } className=" h-80 w-80 m-4 rounded-lg overflow-hidden cursor-pointer">
-                    <img src={ state.image } alt={ state.name } className="w-full h-70 object-cover" />
-                    <h1 className=" text-white text-xl font-bold bg-black bg-opacity-50 px-2 py-1 rounded-b-lg">{ state.name }</h1>
+                <div onClick={ () => nav(`/customer/state/${ state.name }`) } className=" h-40 sm:h-60  lg:h-80 relative   rounded-lg overflow-hidden cursor-pointer">
+                    <img src={ state.image } alt={ state.name } className="w-full h-full object-cover" />
+                    <h1 className=" text-white sm:text-xl text-sm font-bold bg-black/30 rounded-2xl  px-2 py-1  absolute top-1 left-1">{ state.name }</h1>
                 </div>
             ))
             }

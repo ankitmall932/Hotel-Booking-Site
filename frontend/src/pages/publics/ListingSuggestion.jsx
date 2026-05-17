@@ -27,41 +27,33 @@ function ListingSuggestion () {
             { loading ? (
                 <div>Loading...</div>
             ) : (
-                <div >
+                <div  >
                     { listings.length > 0 && (
-                        <h1 className="text-3xl font-bold mb-4">Recently Viewed</h1>
+                        <h1 className="sm:text-3xl text-lg  sm:font-bold font-semibold mb-4">Recently Viewed</h1>
                     ) }
-                    <div className="flex flex-no-wrap gap-5 overflow-hidden shadow-2xl p-2">
+                    <div className="flex flex-nowrap shadow-2xl gap-4 overflow-x-auto no-scrollbar p-2">
                         { listings.map((n) => (
                             <div
                                 key={ n._id }
                                 onClick={ () =>
                                     nav(`/customer/room/${ n._id }`)
                                 }
-                                className='h-100 w-60 p-5 rounded-2xl cursor-pointer flex flex-col gap-5 ' >
-                                <div className='relative'>
-                                    <CreateWishlists
-                                        listing={ n }
-                                    />
+                                className='h-fit w-fit  rounded-2xl  cursor-pointer flex flex-col gap-2 shrink-0' >
+                                <div className='relative '>
+                                    <CreateWishlists listing={ n } />
                                     <img
                                         src={ n.images[ 0 ].url }
                                         alt={ n.name }
-                                        className='w-100 h-50 bg-cover rounded-2xl'
+                                        className='sm:w-40 sm:h-40 w-30 h-30 bg-cover rounded-2xl'
                                     />
                                 </div>
                                 <div className="flex flex-col justify-center gap-2">
-                                    <h1 className='text-2xl font-semibold'>
+                                    <h1 className='sm:text-xl text-sm font-semibold'>
                                         { n.name }
                                     </h1>
-                                    <h1>
+                                    <h1 className='sm:text-lg text-sm font-semibold text-gray-500'>
                                         ₹{ n.price } / per night
                                     </h1>
-                                    <h3>
-                                        { n.location.state }
-                                    </h3>
-                                    <h3>
-                                        { n.location.city }
-                                    </h3>
                                 </div>
                             </div>
                         )) }
