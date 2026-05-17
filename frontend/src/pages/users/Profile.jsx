@@ -11,10 +11,10 @@ function Profile () {
         return isActive ? 'bg-gray-100 rounded-2xl' : 'hover:bg-gray-100 hover:rounded-2xl';
     };
     return (
-        <div className='h-screen w-full px-10 py-25   border-r-2 border-gray-200 '>
-            <h1 className='text-4xl font-semibold mb-5'>Profile</h1>
+        <div className='hidden h-screen w-full xl:px-10 lg:px-5 pl-2 py-25 md:flex flex-col  border-r-2 border-gray-200 '>
+            <h1 className='xl:text-4xl text-2xl font-semibold mb-5'>Profile</h1>
 
-            <div className='p-4 flex flex-col gap-2'>
+            <div className='lg:p-4 md:p-2 flex flex-col gap-2'>
                 <NavLink to='/users/profile' className={ isActive }><h1 className='text-lg font-semibold p-4 flex  items-center gap-3'> <NameIcon /> About me</h1></NavLink>
                 { user?.currentRole === 'customer' && (
                     <NavLink to='/users/past-trips' className={ isActive }> <h1 className='text-lg font-semibold p-4 flex  items-center gap-3'><Luggage size={ 35 } />Bookings</h1></NavLink>

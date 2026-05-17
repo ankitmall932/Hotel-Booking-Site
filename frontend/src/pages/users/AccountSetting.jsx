@@ -53,9 +53,9 @@ function AccountSetting () {
     };
 
     return (
-        <div className='h-full w-full p-25'>
+        <div className='h-full w-full xl:p-25 md:p-10 p-3 '>
             <DeviceHistory />
-            <div className='1/2 flex justify-center items-center gap-5 mt-5'>
+            <div className=' flex  flex-wrap  justify-start items-center gap-5 mt-5'>
                 <button className='px-4 py-3 rounded-2xl bg-red-500 hover:bg-red-600 hover:scale-110 active:scale-90 cursor-pointer text-white' onClick={ handleLogout }>Logout</button>
                 <button onClick={ handleLogoutAll } className='px-4 py-3 rounded-2xl bg-red-500 hover:bg-red-600 hover:scale-110 active:scale-90 cursor-pointer text-white'>LogoutAll</button>
                 <NavLink to='/resetPass' className='px-4 py-3 rounded-2xl bg-blue-500 hover:bg-blue-600 hover:scale-110 active:scale-90 cursor-pointer text-white'>Reset Password</NavLink>

@@ -75,7 +75,6 @@ function PastTrips () {
                 toast.error('Failed to fetch bookings');
                 return;
             }
-            toast.success(res.message || 'Bookings fetched successfully');
             setBookings(res.bookings || []);
         };
         fetchBookings();
@@ -130,7 +129,7 @@ function PastTrips () {
     }
 
     return (
-        <div className='h-full w-full p-10'>
+        <div className='h-full w-full xl:p-10 lg:p-4 md:p-2 p-1'>
             { openShowPayment && selectedBooking && (
                 <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50'>
                     <div className='bg-white p-5 rounded-lg text-center'>
@@ -149,49 +148,48 @@ function PastTrips () {
                     </div>
                 </div>
             ) }
-            <h1 className='text-4xl font-semibold mb-5'>My Bookings</h1>
-            <div className='p-4'>
+            <h1 className='xl:text-4xl md:text-2xl text-lg  font-semibold mb-5'>My Bookings</h1>
+            <div className='xl:p-4 md:p-2 p-1'>
                 { bookings.length === 0 ? (
                     <p>No bookings found.</p>
                 ) : (
                     bookings.map((booking) => (
-                        <div key={ booking._id } className='border-b border-gray-200 py-4 flex justify-between items-center'>
-                            <div onClick={ () => nav(`/customer/room/${ booking.listing._id }`) } className='flex items-center gap-4 cursor-pointer'>
+                        <div key={ booking._id } className='border-b border-gray-200 py-4 flex xl:gap-20 md:gap-15 gap-5 flex-wrap justify-start items-center'>
+                            <div onClick={ () => nav(`/customer/room/${ booking.listing._id }`) } className='flex items-center  cursor-pointer'>
                                 <img src={ booking.listing.images[ 0 ].url } alt={ booking.listing.name } className='w-48 h-48 object-cover rounded' />
-                            </div>
-                            <div>
-                                { booking.status === 'Cancelled' ? (
-                                    <p className='bg-gray-500 text-white px-4 py-2 rounded cursor-not-allowed'>Cancelled</p>
-                                ) : booking.status === 'Completed' ? (
-                                    <p className='bg-blue-600 text-white px-4 py-2 rounded cursor-not-allowed'>Completed</p>
-                                ) : (
-                                    booking.status === 'Pending' ? (
-                                        <div className='flex gap-2 mb-2'>
-                                            <button onClick={ () => { setSelectedBooking(booking); setOpenShowPayment(true); } } className='bg-yellow-500 text-white px-4 py-2 rounded active:opacity-75'>Pending</button>
-                                            <button className='bg-red-500 text-white px-4 py-2 rounded hover:cursor-pointer ' onClick={ () => handleDelete(booking._id) }>
-                                                Delete
-                                            </button>
-                                        </div>
-                                    ) : (
-                                        <div className='flex gap-2 mb-2'>
-                                            { booking.paymentMethod === 'Pay_on_Property' ? (
-                                                <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pay at Property</p>
-                                            ) : (
-                                                <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Online</p>
-                                            ) }
-                                            <p className='bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed'>Confirmed</p>
-                                            <button className='bg-red-500 text-white px-4 py-2 rounded hover:cursor-pointer ' onClick={ () => handleCancel(booking._id) }>
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    )
-                                ) }
                             </div>
                             <div className='flex flex-col gap-2 w-50'>
                                 <h2 className='text-xl font-semibold'>{ booking.listing.name }</h2>
                                 <h2 className='text-lg '>Total Price : { booking.totalPrice.toFixed(2) }</h2>
                                 <h3>{ booking.listing.location.city }-{ booking.listing.location.state }</h3>
                                 <p className='text-gray-600'>{ formatDate(booking.checkInDate) } - { formatDate(booking.checkOutDate) }</p>
+                            </div>
+                            <div className='flex flex-col gap-2 w-50'>                                { booking.status === 'Cancelled' ? (
+                                <p className='bg-gray-500 text-white px-4 py-2 rounded cursor-not-allowed'>Cancelled</p>
+                            ) : booking.status === 'Completed' ? (
+                                <p className='bg-blue-600 text-white px-4 py-2 rounded cursor-not-allowed'>Completed</p>
+                            ) : (
+                                booking.status === 'Pending' ? (
+                                    <div className='flex gap-2 mb-2'>
+                                        <button onClick={ () => { setSelectedBooking(booking); setOpenShowPayment(true); } } className='bg-yellow-500 text-white px-4 py-2 rounded active:opacity-75'>Pending</button>
+                                        <button className='bg-red-500 text-white px-4 py-2 rounded hover:cursor-pointer ' onClick={ () => handleDelete(booking._id) }>
+                                            Delete
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <div className='flex gap-2 mb-2'>
+                                        { booking.paymentMethod === 'Pay_on_Property' ? (
+                                            <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pay at Property</p>
+                                        ) : (
+                                            <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Online</p>
+                                        ) }
+                                        <p className='bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed'>Confirmed</p>
+                                        <button className='bg-red-500 text-white px-4 py-2 rounded hover:cursor-pointer ' onClick={ () => handleCancel(booking._id) }>
+                                            Cancel
+                                        </button>
+                                    </div>
+                                )
+                            ) }
                             </div>
                         </div>
                     ))
