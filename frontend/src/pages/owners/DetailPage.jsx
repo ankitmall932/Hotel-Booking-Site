@@ -41,7 +41,6 @@ function DetailPage () {
                 toast.error(error);
                 return;
             }
-            toast.success(res.message);
             setDetail(res.listing);
         };
         fetchDetail();
@@ -174,7 +173,7 @@ function DetailPage () {
     if (isEditing)
     {
         return (
-            <div className='w-full h-full p-10'>
+            <div className='w-full h-full md:p-10 p-2'>
                 <form onSubmit={ handleSubmit(onSubmit) } className='max-w-4xl mx-auto'>
                     {/* Image Upload Section */ }
                     <div className='mb-6'>
@@ -322,10 +321,10 @@ function DetailPage () {
     }
 
     return (
-        <div className='w-full h-full p-10 flex justify-center items-center flex-col'>
+        <div className='w-full h-full md:p-10 p-2 flex justify-center items-center flex-col'>
             { detail && (
                 <>
-                    <div className="grid grid-cols-4 grid-rows-2 gap-1 w-[80%] h-100">
+                    <div className="grid grid-cols-4 grid-rows-2 gap-1 lg:w-[80%] w-full  lg:h-100 sm:h-80 h-50">
                         { detail.images?.map((img, index) => (
                             <div
                                 key={ img._id || index }
@@ -340,9 +339,9 @@ function DetailPage () {
                             </div>
                         )) }
                     </div>
-                    <div className='flex w-[80%]  mt-10 gap-10  h-full'>
-                        <div className="flex flex-col  w-[80%] gap-5">
-                            <div className='flex gap-5'>
+                    <div className='flex w-[80%] md:flex-row flex-col-reverse  mt-10 gap-10  h-full'>
+                        <div className="flex flex-col  md:w-[80%] w-full gap-5">
+                            <div className='flex lg:flex-row flex-col gap-5'>
                                 <div>
                                     <h1 className='text-2xl font-semibold'>{ detail.name }</h1>
                                     <h1 className='text-lg font-semibold'>{ detail.description }</h1>
@@ -366,7 +365,7 @@ function DetailPage () {
                                 <h1 className='py-5 border-t-2 border-b-2 w-full text-lg'> Hosted By : { detail.owner.name }</h1>
                             </div>
                         </div>
-                        <div className='flex flex-col h-full w-[10%] justify-end items-end mt-15 ml-25 gap-5'>
+                        <div className='flex md:flex-col flex-row gap-5'>
                             <button
                                 onClick={ () => setIsEditing(true) }
                                 className='h-fit w-fit px-5 py-3 bg-red-500 rounded-2xl hover:scale-110 active:scale-90 duration-200'

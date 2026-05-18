@@ -15,7 +15,6 @@ function Booked () {
                 toast.error(error);
             }
             setBookings(res.bookings);
-            toast.success(res.message);
 
         };
         fetchBookings();
@@ -39,15 +38,22 @@ function Booked () {
     }, 0).toFixed(2);
 
     return (
-        <div className='h-full w-full p-25'>
+        <div className='h-full w-full xl:p-25 md:p-10 p-2'>
             <h1 className='text-4xl font-semibold mb-5'>User Bookings</h1>
             <div className='p-4'>
                 { bookings.map((booking) => (
-                    <div key={ booking._id } className='border-b border-gray-200 py-4 flex justify-between items-center'>
-                        <div onClick={ () => nav(`/host/listing/${ booking.listing._id }`) } className='flex items-center gap-4 cursor-pointer'>
+                    <div key={ booking._id } className='border-b border-gray-200 py-4 grid md:grid-cols-3 grid-cols-1 md:gap-10 gap-5 items-center'>
+                        <div onClick={ () => nav(`/host/listing/${ booking.listing._id }`) } className='flex w-fit items-center gap-4 cursor-pointer'>
                             <img src={ booking.listing.images[ 0 ].url } alt={ booking.listing.name } className='w-48 h-48 object-cover rounded' />
                         </div>
-                        <div className='flex flex-col gap-2 w-80'>
+                        <div className='flex flex-col gap-2 w-full'>
+                            <h2 className='text-xl font-semibold'>{ booking.listing?.name }</h2>
+                            <h2 className='text-lg '>Total Price : { booking.totalPrice.toFixed(2) }</h2>
+                            <h3>Booked by: { booking.user?.name }</h3>
+                            <h3>{ booking.user?.email }</h3>
+                            <p className='text-gray-600'>{ formatDate(booking.checkInDate) } - { formatDate(booking.checkOutDate) }</p>
+                        </div>
+                        <div className='flex  gap-2 w-full'>
                             { booking.status === 'Pending' && <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Pending</p> }
                             { booking.status === 'Confirmed' && <p className='bg-green-500 text-white px-4 py-2 rounded cursor-not-allowed'>Confirmed</p> }
                             { booking.status === 'Cancelled' && <p className='bg-red-500 text-white px-4 py-2 rounded cursor-not-allowed'>Cancelled</p> }
@@ -57,13 +63,6 @@ function Booked () {
                             ) : (
                                 <p className='bg-yellow-500 text-white px-4 py-2 rounded cursor-not-allowed'>Online</p>
                             ) }
-                        </div>
-                        <div className='flex flex-col gap-2 w-80'>
-                            <h2 className='text-xl font-semibold'>{ booking.listing?.name }</h2>
-                            <h2 className='text-lg '>Total Price : { booking.totalPrice.toFixed(2) }</h2>
-                            <h3>Booked by: { booking.user?.name }</h3>
-                            <h3>{ booking.user?.email }</h3>
-                            <p className='text-gray-600'>{ formatDate(booking.checkInDate) } - { formatDate(booking.checkOutDate) }</p>
                         </div>
                     </div>
                 )) }

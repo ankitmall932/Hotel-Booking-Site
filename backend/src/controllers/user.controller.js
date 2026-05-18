@@ -252,40 +252,57 @@ export const cancelBooking = async (req, res, next) => {
                 message: 'Booking not found'
             });
         }
-        if (booking.status !== 'Confirmed')
-        {
-            return res.status(400).json({
-                message: 'Only confirmed bookings can be cancelled'
-            });
-        };
         if (booking.user.toString() !== req.user._id.toString())
         {
-            return res.status(403).json({
-                message: 'Unauthorized to cancel this booking'
+            return res.status(403).json({ message: "Unauthorized" });
+        }
+        if (booking.status === "Cancelled")
+        {
+            return res.status(400).json({
+                message: "Booking already cancelled",
+            });
+        }
+        if (booking.status !== "Confirmed")
+        {
+            return res.status(400).json({
+                message: "Only confirmed bookings can be cancelled",
             });
         }
         let refund = null;
         if (booking.razorpay_payment_id)
         {
-            const refundAmount = Math.floor(booking.totalPrice * 0.8 * 100); // 80% refund in paise
-            refund = await razorpayInstance.payments.refund(booking.razorpay_payment_id, {
-                amount: refundAmount,
-            });
+            try
+            {
+                const payment = await razorpayInstance.payments.fetch(
+                    booking.razorpay_payment_id
+                );
+                if (payment.status === "captured")
+                {
+                    const refundAmount = Math.floor(booking.totalPrice * 0.8 * 100);
+                    refund = await razorpayInstance.payments.refund(
+                        booking.razorpay_payment_id,
+                        {
+                            amount: refundAmount,
+                        }
+                    );
+                }
+            } catch (refundErr)
+            {
+                console.error("Refund error:", refundErr);
+            }
         }
-        booking.status = 'Cancelled';
-        await booking.save();
+        booking.status = "Cancelled";
+        await booking.save({ validateBeforeSave: false });
         await cancelBookingEmail(req.user.email, bookingId, req.user.name, booking.totalPrice, refund ? refund.amount / 100 : 0);
         return res.status(200).json({
-            message: 'Booking cancelled successfully' + (refund ? ' and refund initiated' : ''),
-            refund
+            message: "Booking cancelled successfully",
+            refund,
         });
     } catch (err)
     {
         next(err);
     }
-};
-
-export const toggleWishlist = async (req, res, next) => {
+}; export const toggleWishlist = async (req, res, next) => {
     try
     {
         const listingId = req.params.listingId;

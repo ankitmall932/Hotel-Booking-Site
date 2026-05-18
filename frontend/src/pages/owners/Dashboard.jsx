@@ -24,10 +24,10 @@ function Dashboard () {
     }, []);
 
     return (
-        <div className='h-full w-full  flex flex-wrap  gap-5 p-20'>
+        <div className='grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-3 grid-cols-2 gap-3 mx-2 '>
             { listings.map((n) => (
-                <div key={ n._id } onClick={ () => nav(`/host/listing/${ n._id }`) } className='h-full w-110 p-5 rounded-2xl cursor-pointer flex flex-wrap gap-5'>
-                    <img src={ n.images[ 0 ].url } alt={ n.name } className='w-100 h-100 bg-cover rounded-2xl' />
+                <div key={ n._id } onClick={ () => nav(`/host/listing/${ n._id }`) } className='h-full w-full  rounded-2xl cursor-pointer flex flex-wrap gap-4'>
+                    <img src={ n.images[ 0 ].url } alt={ n.name } className='w-full xl:h-80 lg:h-70 md:h-55 sm:h-40 h-40 bg-cover rounded-2xl' />
                     <div className="flex flex-col justify-center  gap-2">
                         <h1 className='text-2xl font-semibold'>{ n.name }</h1>
                         <h1>{ n.price }/per night</h1>

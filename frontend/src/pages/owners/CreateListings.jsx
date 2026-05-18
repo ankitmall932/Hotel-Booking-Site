@@ -116,12 +116,12 @@ function CreateListings () {
     };
 
     return (
-        <div className='flex  gap-2'>
-            <div className='h-full p-10 w-1/2 bg-gray-10'>
-                <div className='flex gap-8 flex-wrap justify-center'>
+        <div className='flex lg:flex-row flex-col  gap-2'>
+            <div className='h-full lg:p-10 p-2 lg:w-1/2 w-full bg-gray-10'>
+                <div className='flex ld:gap-8 gap-4  justify-center'>
                     {/* Form Section */ }
-                    <div className='flex-1 min-w-80'>
-                        <form onSubmit={ handleSubmit(onSubmit) } className='flex flex-col gap-5 bg-white p-10 rounded-2xl shadow-2xl' >
+                    <div className='flex-1 lg:min-w-80 w-full'>
+                        <form onSubmit={ handleSubmit(onSubmit) } className='flex flex-col lg:gap-5 gap-2 bg-white lg:p-10 p-5 rounded-2xl shadow-2xl' >
                             { loading && (
                                 <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
                                     <div
@@ -174,7 +174,7 @@ function CreateListings () {
                     </div>
                 </div>
             </div>
-            <div className='h-full w-1/2 p-10 sticky'>
+            <div className='h-full lg:w-1/2 w-full lg:p-10 p-2 sticky'>
                 <LocationPicker location={ location } setLocation={ setLocation } />
             </div>
         </div>

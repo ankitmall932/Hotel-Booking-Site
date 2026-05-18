@@ -115,7 +115,7 @@ function LocationPicker ({ location, setLocation }) {
                 <input type="text" value={ location.lat } readOnly className='border p-3 rounded-lg ' placeholder='Latitude' />
                 <input type="text" value={ location.lng } readOnly className='border p-3 rounded-lg ' placeholder='Longitude' />
             </div>
-            <div className="overflow-hidden h-125 rounded-2xl">
+            <div className="overflow-hidden lg:h-125 md:h-100 sm:h-80 h-50 rounded-2xl">
                 <MapContainer center={ position } zoom={ 15 } scrollWheelZoom={ true } className='h-120 w-full'>
                     <TileLayer attribution='&copy; OpenStreetMap contributors' url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
                     <LocationMarker
