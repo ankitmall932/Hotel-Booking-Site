@@ -38,7 +38,9 @@ const bookingSchema = new mongoose.Schema({
     },
     expiresAt: {
         type: Date,
-        required: true
+        required: function () {
+            return this.paymentStatus === 'pending';
+        }
     },
     paymentMethod: {
         type: String,
